@@ -1,31 +1,33 @@
 package com.betterteng.Haha.student;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.betterteng.Haha.exception.ApiRequestException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("students")
 public class StudentController {
 
+    private final StudentService studentService;
+
+    @Autowired
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
     @GetMapping
     public List<Student> getAllStudents() {
-        return List.of(
-                new Student(
-                        UUID.randomUUID(),
-                        "James",
-                        "Bond",
-                        "jamesbond@gmail.com",
-                        Student.Gender.MALE),
-                new Student(
-                        UUID.randomUUID(),
-                        "Elisa",
-                        "Tamara",
-                        "elisatamara@gmail.com",
-                        Student.Gender.FEMALE)
-        );
+
+        throw new ApiRequestException("Cannot get students with custom exception...");
+        //throw new IllegalStateException("oops cannot get students...");
+        //return studentService.getAllStudents();
+    }
+
+    @PostMapping
+    public void addNewStudent(@RequestBody Student student) {
+        System.out.println(student);
+        studentService.addNewStudent(student);
     }
 }
