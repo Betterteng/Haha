@@ -42,7 +42,7 @@ public class StudentDataAccessService {
                 "last_name, " +
                 "gender, " +
                 "email) " +
-                "VALUES (?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?::gender, ?)";
 
          // Below will return 1 if success, otherwise return 0...
         return jdbcTemplate.update(
@@ -50,7 +50,7 @@ public class StudentDataAccessService {
                 studentId,
                 student.getFirstName(),
                 student.getLastName(),
-                student.getGender().toString(),
+                student.getGender().name().toUpperCase(),
                 student.getEmail()
         );
 
@@ -77,5 +77,18 @@ public class StudentDataAccessService {
         };
     }
 
-
+    @SuppressWarnings("ConstantConditons")
+    boolean isEmailTake(String email) {
+        String sql = "" +
+                "SELECT EXISTS (" +
+                " SELECT 1 " +
+                " FROM student " +
+                " WHERE email = ?" +
+                ")";
+        return jdbcTemplate.queryForObject(
+                sql,
+                new Object[] {email},
+                (resulSet, i) -> resulSet.getBoolean(1)
+        );
+    }
 }

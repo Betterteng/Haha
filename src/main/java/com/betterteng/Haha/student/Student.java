@@ -2,7 +2,9 @@ package com.betterteng.Haha.student;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public class Student {
@@ -15,17 +17,17 @@ public class Student {
     @NotBlank
     private final String lastName;
 
-    @NotBlank
+    @Email
     private final String email;
 
-    @NotBlank
+    @NotNull
     private final Gender gender;
 
     public Student(@JsonProperty("studentId") UUID studentId,
-                   @JsonProperty("firstName")String firstName,
-                   @JsonProperty("lastName")String lastName,
-                   @JsonProperty("email")String email,
-                   @JsonProperty("gender")Gender gender) {
+                   @JsonProperty("firstName") String firstName,
+                   @JsonProperty("lastName") String lastName,
+                   @JsonProperty("email") String email,
+                   @JsonProperty("gender") Gender gender) {
         this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,7 +37,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Student {" +
                 "studentId=" + studentId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

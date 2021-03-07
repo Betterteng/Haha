@@ -1,5 +1,6 @@
 package com.betterteng.Haha.student;
 
+import com.betterteng.Haha.exception.ApiRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,11 @@ public class StudentService {
     void addNewStudent(UUID studentId, Student student) {
         UUID newStudentId = Optional.ofNullable(studentId) // If Id is null, then generate one.
                 .orElse(UUID.randomUUID());
-        // TODO: Verify that email is not take
+
+        if (studentDataAccessService.isEmailTake(student.getEmail())) {
+            throw new ApiRequestException(student.getEmail() + " has been take..." +
+                    "\n So we cannot save it to the database...");
+        }
 
         studentDataAccessService.insertStudent(newStudentId, student);
     }
